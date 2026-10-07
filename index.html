@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frontline Sectors</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%231f3d78'/><rect x='3' y='5' width='10' height='6' fill='%237aa8f0'/></svg>" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="game"></div>
+
+      <div id="hud" class="hidden">
+        <div id="topbar">
+          <div class="score blue">
+            <div class="who">Niebiescy (Ty)</div>
+            <div class="pz"><span id="pz-blue">0</span><small> / <span class="win-pz">1000</span> PZ</small></div>
+            <div class="bar"><i id="pzbar-blue"></i></div>
+          </div>
+          <div class="center">
+            <div class="clock" id="clock">00:00</div>
+            <div class="sub">limit <span id="limit">15:00</span></div>
+          </div>
+          <div class="score red">
+            <div class="who">Czerwoni (AI)</div>
+            <div class="pz"><span id="pz-red">0</span><small> / <span class="win-pz">1000</span> PZ</small></div>
+            <div class="bar"><i id="pzbar-red"></i></div>
+          </div>
+          <div class="eco">
+            <div class="pd"><span class="lbl">PD</span> <b id="pd">0</b></div>
+            <div class="sub">dochód <span id="income">+3</span>/s</div>
+            <div class="sub">jednostki <b id="unitcount">0/40</b></div>
+          </div>
+        </div>
+
+        <div id="toasts"></div>
+
+        <div id="recruit">
+          <h3>Posiłki</h3>
+          <div id="cards"></div>
+          <div id="queue"></div>
+          <div class="rally-row">
+            <button id="btn-rally" title="R">⚑ Punkt zbiórki</button>
+            <button id="btn-rally-clear" title="Usuń punkt zbiórki">✕</button>
+          </div>
+        </div>
+
+        <div id="minimap-wrap"><canvas id="minimap" width="240" height="160"></canvas></div>
+
+        <div id="bottom">
+          <div id="selinfo"></div>
+          <div id="orders">
+            <button data-cmd="attackMove" title="A, następnie LPM">Atak w ruchu <kbd>A</kbd></button>
+            <button data-cmd="stop" title="S">Stop <kbd>S</kbd></button>
+            <button data-cmd="hold" title="H">Utrzymaj <kbd>H</kbd></button>
+            <button data-cmd="load" title="L">Załaduj <kbd>L</kbd></button>
+            <button data-cmd="unload" title="U">Wyładuj <kbd>U</kbd></button>
+          </div>
+        </div>
+      </div>
+
+      <div id="start" class="screen">
+        <div class="panel">
+          <h1>Frontline Sectors</h1>
+          <p class="lead">Taktyczne RTS-y o strefy. Przejmuj sektory, zamawiaj posiłki i pokonaj Czerwonych, zanim oni pokonają Ciebie.</p>
+          <div class="cols">
+            <div>
+              <h3>Cel</h3>
+              <ul>
+                <li>Zdobądź <b>1000 PZ</b> (punkty zwycięstwa) – za kontrolę stref (1/s każda) i niszczenie wrogów.</li>
+                <li><b>PD</b> (punkty dowodzenia) służą do zamawiania posiłków: dochód bazowy + strefy. Zabijanie nie daje PD.</li>
+                <li>Strefy przejmuje <b>piechota</b>. Wróg bojowy w strefie wstrzymuje przejmowanie („sporna”).</li>
+                <li>Limit czasu 15 min – wygrywa wyższy wynik PZ.</li>
+                <li>Mgła wojny: widzisz tylko to, co widzą Twoje jednostki.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Sterowanie</h3>
+              <ul>
+                <li><b>LPM</b> / przeciągnięcie – zaznaczanie, <b>Shift</b> – dodaj/usuń</li>
+                <li><b>PPM</b> – ruch / atak widocznego wroga / wsiadanie do transportera</li>
+                <li><b>A</b> + LPM – atak w ruchu · <b>S</b> – stop · <b>H</b> – utrzymaj pozycję</li>
+                <li><b>L</b> / <b>U</b> – załaduj / wyładuj · <b>R</b> – punkt zbiórki</li>
+                <li><b>WASD</b> / strzałki – kamera (A/S przy zaznaczeniu: Shift+A/S) · <b>kółko</b> – zoom</li>
+                <li><b>Spacja</b> – pauza · <b>Esc</b> – anuluj · <b>Ctrl+1..9</b> grupy</li>
+              </ul>
+            </div>
+          </div>
+          <div class="start-row">
+            <label>Liczba stref
+              <select id="zone-count">
+                <option>3</option><option>4</option><option selected>5</option><option>6</option>
+              </select>
+            </label>
+            <button id="btn-start" class="primary">Rozpocznij grę</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="end" class="screen hidden">
+        <div class="panel small">
+          <h1 id="end-title">Zwycięstwo</h1>
+          <p id="end-text"></p>
+          <div class="start-row">
+            <button id="btn-restart" class="primary">Zagraj ponownie</button>
+            <button id="btn-menu">Menu</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="pause" class="screen hidden">
+        <div class="panel small">
+          <h1>Pauza</h1>
+          <p>Spacja lub przycisk wznawia grę.</p>
+          <button id="btn-resume" class="primary">Wznów</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
